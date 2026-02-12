@@ -1,0 +1,12 @@
+docker-build
+OpenLIFU-superbuild
+*.o
+*.obj
+build
+**/Build
+.git
+.gitignore
+/.vscode
+node_modules
+venv
+__pycache__

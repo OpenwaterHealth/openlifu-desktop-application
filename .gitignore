@@ -1,0 +1,35 @@
+# Docker build output
+docker-build/
+
+# CMake / Slicer superbuild
+OpenLIFU-superbuild/
+
+# Qt installer artifacts
+qt-opensource-linux-x64-*.run
+
+# General build artifacts
+build/
+Build/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env/
+
+# OS files
+.DS_Store
+Thumbs.db
