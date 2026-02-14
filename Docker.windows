@@ -1,0 +1,106 @@
+# escape=`
+
+# ============================================================================
+# Docker.windows — Windows container for building OpenLIFU (Slicer-based app)
+#
+# Based on the BUILD_WINDOWS.md instructions:
+#   - Visual Studio 17 2022 Build Tools
+#   - Qt 5.15.2 (via aqtinstall)
+#   - CMake, Git, NSIS
+#   - Short paths: C:\W\O (source), C:\W\OR (build)
+# ============================================================================
+
+FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS base
+
+# ── Phase 1: Use PowerShell to install Chocolatey and packages ──
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Install Chocolatey (package manager)
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force; `
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; `
+    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+# Install Git, CMake, Python, NSIS via Chocolatey
+RUN choco install -y git --params '/GitOnlyOnPath /NoShellIntegration' ; `
+    choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System' ; `
+    choco install -y python3 ; `
+    choco install -y nsis
+
+# Refresh PATH so subsequent layers see the new tools
+RUN $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + `
+    [System.Environment]::GetEnvironmentVariable('Path','User'); `
+    [Environment]::SetEnvironmentVariable('Path', $env:Path, 'Machine')
+
+# Download VS Build Tools installer
+RUN Invoke-WebRequest -Uri 'https://aka.ms/vs/17/release/vs_buildtools.exe' `
+    -OutFile C:\vs_buildtools.exe
+
+# ── Phase 2: Switch to CMD shell for VS Build Tools installation ──
+# Microsoft recommends CMD for the VS installer in containers to properly
+# handle the --wait flag and exit code 3010 (reboot required = success).
+SHELL ["cmd", "/S", "/C"]
+
+# Install VS 2022 Build Tools with C++ workload
+# Exit code 3010 means "reboot required" which is fine for containers
+RUN C:\vs_buildtools.exe --quiet --wait --norestart --nocache `
+        --installPath C:\BuildTools `
+        --add Microsoft.VisualStudio.Workload.VCTools `
+        --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+        --add Microsoft.VisualStudio.Component.Windows11SDK.22621 `
+        --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest `
+    || IF "%ERRORLEVEL%"=="3010" EXIT 0
+
+RUN del C:\vs_buildtools.exe
+
+# Verify the compiler is installed
+RUN C:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat amd64 && cl.exe 2>&1 | findstr "Version"
+
+# Verify rc.exe is accessible and works
+RUN C:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat amd64 && where rc.exe && rc.exe /nologo /? > nul 2>&1 & echo rc.exe verification complete
+
+# ── Phase 3: Bake VS developer environment into the image ──
+# The VS generator runs its own compiler tests which fail in containers because
+# UCRT/SDK runtime DLLs aren't on PATH. Persisting the full vcvarsall environment
+# to machine-level registry ensures CMake's compiler tests find everything.
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+RUN Write-Host 'Persisting VS developer environment to machine-level...'; `
+    $lines = cmd /c '""C:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat"" amd64 && set' 2>&1; `
+    foreach ($line in $lines) { `
+        if ($line -match '^([^=]+)=(.*)$') { `
+            $name = $matches[1]; $val = $matches[2]; `
+            [Environment]::SetEnvironmentVariable($name, $val, 'Machine') `
+        } `
+    }; `
+    Write-Host 'Done. Verifying...'; `
+    $p = [Environment]::GetEnvironmentVariable('VSINSTALLDIR','Machine'); `
+    if (-not $p) { throw 'VSINSTALLDIR not set; vcvarsall capture failed' }; `
+    Write-Host "VSINSTALLDIR=$p"
+
+# Install Qt 5.15.2 via aqtinstall
+RUN $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine'); `
+    python -m pip install --no-cache-dir aqtinstall ; `
+    python -m aqt install-qt windows desktop 5.15.2 win64_msvc2019_64 `
+        -m qtwebengine -O C:\Qt ; `
+    if (-not (Test-Path 'C:\Qt\5.15.2\msvc2019_64\lib\cmake\Qt5\Qt5Config.cmake')) { `
+        throw 'Qt5Config.cmake not found after aqt install' `
+    }
+
+# Set Qt5_DIR for CMake discovery
+ENV QT5_DIR="C:\\Qt\\5.15.2\\msvc2019_64\\lib\\cmake\\Qt5"
+
+# Prepare work directories (short paths per BUILD_WINDOWS.md to avoid MAX_PATH)
+RUN New-Item -ItemType Directory -Path C:\W -Force ; `
+    New-Item -ItemType Directory -Path C:\output -Force
+
+WORKDIR C:\W
+
+# Copy entrypoint script (batch file so vcvarsall.bat works natively)
+COPY docker-entrypoint.cmd C:\docker-entrypoint.cmd
+
+# ---------- Environment ----------
+ENV BUILD_TYPE="Release"
+ENV CMAKE_GENERATOR="Visual Studio 17 2022"
+
+# Use cmd entrypoint so vcvarsall.bat initializes the compiler environment natively
+ENTRYPOINT ["cmd", "/s", "/c", "C:\\docker-entrypoint.cmd"]

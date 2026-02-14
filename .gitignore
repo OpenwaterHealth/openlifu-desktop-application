@@ -33,3 +33,5 @@ venv/
 # OS files
 .DS_Store
 Thumbs.db
+
+docker-build-windows/
