@@ -96,13 +96,54 @@ if !ERRORLEVEL! neq 0 (
 )
 
 REM ── Build ──
+REM Build the outer superbuild; log output to file for easier debugging.
+REM /maxcpucount for parallel compilation, /fl for file logger.
+set "BUILD_LOG=%BUILD_PATH%\build.log"
 echo Building (this may take several hours)...
-cmake --build "%BUILD_PATH%" --config %BUILD_TYPE% -- /maxcpucount
-if !ERRORLEVEL! neq 0 (
-    echo ERROR: Build failed with exit code !ERRORLEVEL!
-    exit /b !ERRORLEVEL!
+echo Build log: %BUILD_LOG%
+
+cmake --build "%BUILD_PATH%" --config %BUILD_TYPE% -- /maxcpucount /fl /flp:logfile="%BUILD_LOG%";Verbosity=normal
+set BUILD_EXIT=!ERRORLEVEL!
+
+REM Copy build log to output regardless of success/failure
+if not exist "C:\output" mkdir "C:\output"
+if exist "%BUILD_LOG%" (
+    copy "%BUILD_LOG%" "C:\output\build.log" /y >nul 2>&1
+    echo Build log copied to C:\output\build.log
 )
 
+if !BUILD_EXIT! neq 0 (
+    echo =========================================
+    echo BUILD FAILED - exit code !BUILD_EXIT!
+    echo =========================================
+    echo Extracting errors from build log:
+    echo -----------------------------------------
+    findstr /i /c:"error " /c:"fatal error" /c:"FAILED" "%BUILD_LOG%" 2>nul | findstr /v /c:"0 Error"
+    echo -----------------------------------------
+
+    REM Even though the outer superbuild failed, check if inner Slicer build succeeded
+    REM The superbuild often fails on a wrapper step even if the inner build is fine
+    set INNER_BUILD=%BUILD_PATH%\Slicer-build
+    if exist "!INNER_BUILD!\bin\Release\OpenLIFUApp-real.exe" (
+        echo.
+        echo NOTE: Inner Slicer build appears to have succeeded!
+        echo Found: !INNER_BUILD!\bin\Release\OpenLIFUApp-real.exe
+        echo Attempting to package despite superbuild error...
+        goto :package
+    )
+    if exist "!INNER_BUILD!\bin\Release\OpenLIFU.exe" (
+        echo.
+        echo NOTE: Inner Slicer build appears to have succeeded!
+        echo Found: !INNER_BUILD!\bin\Release\OpenLIFU.exe
+        echo Attempting to package despite superbuild error...
+        goto :package
+    )
+
+    echo Full build log is available at C:\output\build.log
+    exit /b !BUILD_EXIT!
+)
+
+:package
 REM ── Package ──
 set INNER_BUILD=%BUILD_PATH%\Slicer-build
 if exist "%INNER_BUILD%" (
