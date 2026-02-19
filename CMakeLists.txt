@@ -85,7 +85,7 @@ if(WIN32)
 endif()
 
 # Slicer options
-option(BUILD_TESTING                            "Build application test suite"                        ON)
+option(BUILD_TESTING                            "Build application test suite"                        OFF)
 option(Slicer_BUILD_APPLICATIONUPDATE_SUPPORT   "Build application update support"                    OFF)
 option(Slicer_BUILD_DOCUMENTATION               "Build documentation (Doxygen, sphinx, ...)"          OFF)
 if(WIN32)
@@ -186,6 +186,19 @@ list(APPEND Slicer_EXTENSION_SOURCE_DIRS ${${extension_name}_SOURCE_DIR})
 
 # Add python requirements for SlicerOpenLIFU
 list(APPEND Slicer_ADDITIONAL_DEPENDENCIES python-sliceropenlifu-requirements)
+
+# When testing is enabled, SlicerOpenLIFU requires a Google Drive Service Account JSON key for DVC.
+# Validate the path here and forward it to the inner Slicer build so SlicerOpenLIFU can consume it.
+if(BUILD_TESTING)
+  set(DVC_GDRIVE_KEY_PATH "" CACHE FILEPATH
+    "Path to GDrive Service Account JSON key for DVC (required when BUILD_TESTING is ON).")
+  if(NOT EXISTS "${DVC_GDRIVE_KEY_PATH}")
+    message(FATAL_ERROR
+      "DVC_GDRIVE_KEY_PATH is not set or does not exist. Testing is enabled, "
+      "the path to the Google Drive Service Account JSON key must be provided.")
+  endif()
+  mark_as_superbuild(DVC_GDRIVE_KEY_PATH:FILEPATH)
+endif()
 
 # Add Slicer sources
 add_subdirectory(${slicersources_SOURCE_DIR} ${slicersources_BINARY_DIR})
