@@ -97,3 +97,19 @@ slicerMacroBuildApplication(
   DEFAULT_SETTINGS_FILE Resources/Settings/DefaultSettings.ini
   ${extra_args}
   )
+
+# On Windows, embed the application icon into OpenLIFUApp-real.exe using
+# CTKResEdit as a post-build step, mirroring how the launcher (OpenLIFU.exe)
+# already gets its icon. Without this, Windows populates its icon cache with
+# the generic default icon after the first run, causing subsequent runs to
+# display the wrong icon in the taskbar/system tray.
+if(WIN32)
+  add_custom_target(${APP_TARGET_NAME}UpdateAppIcon ALL
+    COMMAND
+      ${CTKResEdit_EXECUTABLE}
+        --update-resource-ico "$<TARGET_FILE:${APP_TARGET_NAME}>"
+        IDI_ICON1 "${CMAKE_CURRENT_SOURCE_DIR}/Resources/Icons/DesktopIcon.ico"
+    COMMENT "Updating icon in OpenLIFUApp-real.exe"
+    )
+  add_dependencies(${APP_TARGET_NAME}UpdateAppIcon ${APP_TARGET_NAME})
+endif()
