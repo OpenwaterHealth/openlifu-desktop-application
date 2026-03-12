@@ -7,7 +7,7 @@ set(VERSION_MAJOR
   1
   )
 set(VERSION_MINOR
-  10
+  11
   )
 set(VERSION_PATCH
   0
