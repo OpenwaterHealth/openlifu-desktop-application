@@ -3,6 +3,10 @@ set(APPLICATION_NAME
   OpenLIFU
   )
 
+set(APPLICATION_DISPLAY_NAME
+  "OpenLIFU Legacy IO"
+  )
+
 set(VERSION_MAJOR
   1
   )

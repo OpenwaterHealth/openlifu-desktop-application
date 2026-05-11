@@ -16,6 +16,8 @@ import SlicerCustomAppUtilities
 # Import to ensure the files are available through the Qt resource system
 from Resources import HomeResources
 
+def print_message():
+    print("This special version of OpenLIFU is patched to work with the SlicerOpenLIFU v1.19.0+legacy.io which is patched to work with the openlifu-python tag v0.20.0+legacy.io.0.9.0 which is essentially just openlifu v0.20.0 with the io module reverted to the v0.9.0 state.")
 class Home(ScriptedLoadableModule):
     """The home module allows to orchestrate and style the overall application workflow.
 
@@ -96,6 +98,8 @@ class Home(ScriptedLoadableModule):
         slicer.app.connect("startupCompleted()", configure_views)
 
         slicer.app.connect("startupCompleted()", lambda : slicer.util.getModuleLogic("OpenLIFUHome").workflow_jump_ahead())
+
+        slicer.app.connect("startupCompleted()", print_message)
 
 class HomeWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     """Uses ScriptedLoadableModuleWidget base class, available at:
