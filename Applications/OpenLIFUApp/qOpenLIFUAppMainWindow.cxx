@@ -22,13 +22,14 @@
 // Qt includes
 #include <QDesktopWidget>
 #include <QLabel>
+#include <QMessageBox>
 
 // Slicer includes
 #include "qSlicerApplication.h"
-#include "qSlicerAboutDialog.h"
 #include "qSlicerMainWindow_p.h"
 #include "qSlicerModuleSelectorToolBar.h"
 #include "qMRMLWidget.h"
+#include "vtkSlicerVersionConfigure.h"
 
 //-----------------------------------------------------------------------------
 // qOpenLIFUAppMainWindowPrivate methods
@@ -61,9 +62,9 @@ void qOpenLIFUAppMainWindowPrivate::setupUi(QMainWindow * mainWindow)
   //----------------------------------------------------------------------------
   // Add actions
   //----------------------------------------------------------------------------
-  QAction* helpAboutSlicerAppAction = new QAction(mainWindow);
-  helpAboutSlicerAppAction->setObjectName("HelpAboutOpenLIFUAppAction");
-  helpAboutSlicerAppAction->setText("About " + app->applicationName());
+  QAction* helpAboutOpenLIFUAppAction = new QAction(mainWindow);
+  helpAboutOpenLIFUAppAction->setObjectName("HelpAboutOpenLIFUAppAction");
+  helpAboutOpenLIFUAppAction->setText("About " + app->mainApplicationName());
 
   //----------------------------------------------------------------------------
   // Calling "setupUi()" after adding the actions above allows the call
@@ -72,7 +73,7 @@ void qOpenLIFUAppMainWindowPrivate::setupUi(QMainWindow * mainWindow)
   this->Superclass::setupUi(mainWindow);
 
   // Add Help Menu Action
-  this->HelpMenu->addAction(helpAboutSlicerAppAction);
+  this->HelpMenu->addAction(helpAboutOpenLIFUAppAction);
 
   //----------------------------------------------------------------------------
   // Configure
@@ -120,7 +121,25 @@ qOpenLIFUAppMainWindow::~qOpenLIFUAppMainWindow()
 //-----------------------------------------------------------------------------
 void qOpenLIFUAppMainWindow::on_HelpAboutOpenLIFUAppAction_triggered()
 {
-  qSlicerAboutDialog about(this);
-  about.setLogo(QPixmap(":/Logo.png"));
-  about.exec();
+  qSlicerApplication* app = qSlicerApplication::application();
+  const QString applicationName = app->mainApplicationName();
+  const QString text = QString(
+    "<h3>%1</h3>"
+    "<p>An open-source software platform for Low Intensity Focused Ultrasound (LIFU).</p>"
+    "<p>OpenLIFU version: %2 (%3)</p>"
+    "<p>Version details: 3D Slicer %4 (r%5 / %6)</p>"
+    "<p><strong>CAUTION - Investigational device.</strong> Limited by Federal "
+    "(or United States) law to investigational use. The system described here "
+    "has <em>not</em> been evaluated by the FDA and is not designed for the "
+    "treatment or diagnosis of any disease. It is provided AS-IS, with no "
+    "warranties. User assumes all liability and responsibility for identifying "
+    "and mitigating risks associated with using this software.</p>")
+    .arg(applicationName.toHtmlEscaped())
+    .arg(app->applicationVersion().toHtmlEscaped())
+    .arg(app->mainApplicationRepositoryRevision().toHtmlEscaped())
+    .arg(QString(Slicer_VERSION_FULL).toHtmlEscaped())
+    .arg(app->revision().toHtmlEscaped())
+    .arg(app->repositoryRevision().toHtmlEscaped());
+
+  QMessageBox::about(this, tr("About %1").arg(applicationName), text);
 }
