@@ -35,10 +35,15 @@ class Home(ScriptedLoadableModule):
         self.parent.helpText += self.getDefaultModuleDocumentationLink()
         self.parent.acknowledgementText = """..."""  # replace with organization, grant and thanks.
 
+        # Force-create the OpenLIFU host module's widget so its selectModule
+        # shim is installed before any of the callbacks below call selectModule.
+        slicer.app.connect("startupCompleted()", lambda: slicer.util.getModule("OpenLIFU").widgetRepresentation())
+
         # Force start guided mode once the styling and UI modifications are complete
+        # (Round 5c-1: workflow / start_guided_mode were folded onto the host OpenLIFU logic.)
         def start_guided_mode():
-            openLIFUHomeLogic = slicer.util.getModuleLogic("OpenLIFUHome")
-            openLIFUHomeLogic.start_guided_mode()
+            openLIFULogic = slicer.util.getModuleLogic("OpenLIFU")
+            openLIFULogic.start_guided_mode()
         slicer.app.connect("startupCompleted()", start_guided_mode)
 
         # Force start user account mode
@@ -95,7 +100,7 @@ class Home(ScriptedLoadableModule):
 
         slicer.app.connect("startupCompleted()", configure_views)
 
-        slicer.app.connect("startupCompleted()", lambda : slicer.util.getModuleLogic("OpenLIFUHome").workflow_jump_ahead())
+        slicer.app.connect("startupCompleted()", lambda : slicer.util.getModuleLogic("OpenLIFU").workflow_jump_ahead())
 
 class HomeWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     """Uses ScriptedLoadableModuleWidget base class, available at:
@@ -138,7 +143,7 @@ class HomeWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         # See https://github.com/OpenwaterHealth/OpenLIFU-app/issues/20
         # This is a terrible way to fix it, but it's our patch solution for now.
         # For me, even setting this timer to 1ms works! But without a timer it doesn't work.
-        qt.QTimer.singleShot(500, lambda : slicer.util.getModuleLogic("OpenLIFUHome").workflow.enforceGuidedModeVisibility(True))
+        qt.QTimer.singleShot(500, lambda : slicer.util.getModuleLogic("OpenLIFU").workflow.enforceGuidedModeVisibility(True))
 
         # Call routine that ends up showing login module banners
         qt.QTimer.singleShot(1, lambda : slicer.util.getModuleWidget('OpenLIFULogin').onParameterNodeModified(None, None))
