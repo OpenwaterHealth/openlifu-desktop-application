@@ -47,14 +47,19 @@ class Home(ScriptedLoadableModule):
         slicer.app.connect("startupCompleted()", start_guided_mode)
 
         # Force start user account mode
+        # (Round 5c-3 Commit E: OpenLIFULogin shim deleted; Login logic is now
+        # owned by the OpenLIFU host module as ``login_logic``.)
         def start_user_account_mode():
-            openLIFULoginLogic = slicer.util.getModuleLogic("OpenLIFULogin")
+            openLIFULoginLogic = slicer.util.getModuleLogic("OpenLIFU").login_logic
             openLIFULoginLogic.start_user_account_mode()
         slicer.app.connect("startupCompleted()", start_user_account_mode)
 
         def ensure_database_exists_and_attempt_connect():
-            openLIFUDatabaseWidget = slicer.util.getModuleWidget("OpenLIFUDatabase")
-            openLIFUDatabaseLogic = slicer.util.getModuleLogic("OpenLIFUDatabase")
+            # Round 5c-3 Commit E: OpenLIFUDatabase shim deleted; Database
+            # widget and logic are now owned by the OpenLIFU host module.
+            openLIFUHostWidget = slicer.util.getModuleWidget("OpenLIFU")
+            openLIFUDatabaseWidget = openLIFUHostWidget.get_page_widget("OpenLIFUDatabase")
+            openLIFUDatabaseLogic = slicer.util.getModuleLogic("OpenLIFU").database_logic
 
             # 1) Check if the path was set to something. If the setting points
             # to a directory that exists and is an openlifu database, we attempt
@@ -146,7 +151,9 @@ class HomeWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         qt.QTimer.singleShot(500, lambda : slicer.util.getModuleLogic("OpenLIFU").workflow.enforceGuidedModeVisibility(True))
 
         # Call routine that ends up showing login module banners
-        qt.QTimer.singleShot(1, lambda : slicer.util.getModuleWidget('OpenLIFULogin').onParameterNodeModified(None, None))
+        # (Round 5c-3 Commit E: OpenLIFULogin shim deleted; Login widget is
+        # now owned by the OpenLIFU host module.)
+        qt.QTimer.singleShot(1, lambda : slicer.util.getModuleWidget("OpenLIFU").get_page_widget("OpenLIFULogin").onParameterNodeModified(None, None))
 
     def setupNodes(self):
         self.logic.setup3DView()

@@ -30,7 +30,7 @@ Follow local Slicer style first. C++ classes use Qt/Slicer names such as `qOpenL
 ctest --test-dir OpenLIFU-superbuild/Slicer-build --output-on-failure
 ```
 
-`SlicerOpenLIFU` tests run inside Slicer with CTest and `ScriptedLoadableModuleTest`; names follow `py_<ModuleName>`, and `py_OpenLIFUHome` drives the full workflow. For core library changes in OpenLIFU-python, run `pytest`, `nox -s lint`, and `nox -s pylint` in that repository.
+`SlicerOpenLIFU` tests run inside Slicer with CTest and `ScriptedLoadableModuleTest`; the sole integration test is `py_OpenLIFU`, which drives the full workflow through every page's Test class. For core library changes in OpenLIFU-python, run `pytest`, `nox -s lint`, and `nox -s pylint` in that repository.
 
 ## Commit & Pull Request Guidelines
 
