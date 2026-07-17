@@ -34,6 +34,26 @@ Follow [these instructions](https://github.com/OpenwaterHealth/OpenLIFU-python/t
 * [Building on Windows](BUILD_WINDOWS.md)
 * [Building on Linux](BUILD_LINUX.md)
 
+### Packaged Python environment inventory
+
+Packaging records Slicer's Python packages using `pip list --format=freeze` and
+includes the result at
+`share/OpenLIFU-<Slicer version>/BuildMetadata/python-environment.txt`. On Linux,
+this path is inside the package tarball. On Windows, it is under the NSIS
+installation directory, which defaults to
+`%LOCALAPPDATA%\Openwater\OpenLIFU <package version>`.
+
+A normal build does not generate or install this file. To generate a loose copy
+without packaging, build this target in the inner Slicer build:
+
+```sh
+cmake --build <custom-app-superbuild>/Slicer-build \
+  --target OpenLIFUPythonEnvironmentArtifacts
+```
+
+Add `--config Release` on Windows. The loose file is written to
+`<custom-app-superbuild>/Slicer-build/BuildMetadata/python-environment.txt`.
+
 ### Relation to other repositories
 
 * [SlicerOpenLIFU](https://github.com/OpenwaterHealth/SlicerOpenLIFU) is the Slicer extension that drives this Slicer custom application. It can be used as an extension in 3D Slicer.
@@ -49,4 +69,3 @@ So, in order to update the `openlifu` that is used:
 
 
 ![OpenLIFU by Openwater](Applications/OpenLIFUApp/Resources/Images/LogoFull.png?raw=true)
-
