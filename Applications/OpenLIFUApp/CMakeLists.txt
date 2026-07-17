@@ -99,34 +99,50 @@ slicerMacroBuildApplication(
   )
 
 # --------------------------------------------------------------------------
-# Packaged Python environment metadata
+# Packaged Python environment inventory
 # --------------------------------------------------------------------------
 
 set(OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR "${CMAKE_BINARY_DIR}/BuildMetadata")
-set(OPENLIFU_PYTHON_ENVIRONMENT_GENERATOR
-  "${CMAKE_CURRENT_BINARY_DIR}/GeneratePythonEnvironmentArtifacts.py"
+set(OPENLIFU_PYTHON_ENVIRONMENT_FILE
+  "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.txt"
   )
 set(OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT
   "${CMAKE_CURRENT_BINARY_DIR}/GeneratePythonEnvironmentArtifacts.cmake"
   )
 
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/GeneratePythonEnvironmentArtifacts.py"
-  "${OPENLIFU_PYTHON_ENVIRONMENT_GENERATOR}"
-  COPYONLY
+file(CONFIGURE
+  OUTPUT "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
+  CONTENT [=[
+set(_output_file "@OPENLIFU_PYTHON_ENVIRONMENT_FILE@")
+file(MAKE_DIRECTORY "@OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR@")
+file(REMOVE "${_output_file}")
+
+execute_process(
+  COMMAND
+    "@PYTHON_EXECUTABLE@" -m pip --disable-pip-version-check
+      list --format=freeze
+  RESULT_VARIABLE _generation_result
+  OUTPUT_FILE "${_output_file}"
   )
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/GeneratePythonEnvironmentArtifacts.cmake.in"
-  "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
+
+if(NOT _generation_result EQUAL 0)
+  file(REMOVE "${_output_file}")
+  message(FATAL_ERROR
+    "Failed to generate the Python environment inventory "
+    "(result: ${_generation_result})."
+    )
+endif()
+
+message(STATUS "Generated Python environment inventory at ${_output_file}")
+]=]
   @ONLY
+  NEWLINE_STYLE LF
   )
 
 add_custom_target(OpenLIFUPythonEnvironmentArtifacts
   COMMAND "${CMAKE_COMMAND}" -P "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
-  BYPRODUCTS
-    "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.txt"
-    "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.cdx.json"
-  COMMENT "Generating Python environment artifacts"
+  BYPRODUCTS "${OPENLIFU_PYTHON_ENVIRONMENT_FILE}"
+  COMMENT "Generating Python environment inventory"
   VERBATIM
   )
 
@@ -135,15 +151,9 @@ install(
   COMPONENT Runtime
   )
 install(
-  FILES "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.txt"
+  FILES "${OPENLIFU_PYTHON_ENVIRONMENT_FILE}"
   DESTINATION "${Slicer_INSTALL_SHARE_DIR}/BuildMetadata"
   COMPONENT Runtime
-  )
-install(
-  FILES "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.cdx.json"
-  DESTINATION "${Slicer_INSTALL_SHARE_DIR}/BuildMetadata"
-  COMPONENT Runtime
-  OPTIONAL
   )
 
 # On Windows, embed the application icon into OpenLIFUApp-real.exe using

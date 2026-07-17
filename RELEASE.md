@@ -76,15 +76,6 @@ stabilization period. So in other words the major and minor SlicerOpenLIFU versi
 but there is room for incorporating bug fixes after the freeze by updating the
 SlicerOpenLIFU patch version.
 
-## Package Python Environment Metadata
-
-For every release candidate, final release, and patch release, inspect the
-packaged `share/OpenLIFU-<Slicer version>/BuildMetadata` directory. Confirm that
-`python-environment.txt` and `python-environment.cdx.json` contain the expected
-`openlifu` version. Investigate any CycloneDX warning before publishing; the
-package build intentionally continues with only the required pip inventory when
-CycloneDX generation is unavailable or invalid.
-
 ## T-8 Weeks: Release Branch
 
 1. Choose the target Slicer version.
