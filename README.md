@@ -34,6 +34,26 @@ Follow [these instructions](https://github.com/OpenwaterHealth/OpenLIFU-python/t
 * [Building on Windows](BUILD_WINDOWS.md)
 * [Building on Linux](BUILD_LINUX.md)
 
+### Packaged Python environment inventory
+
+Every packaging run records the packages resolved in Slicer's build-tree Python
+environment. The diagnostic inventory is generated with
+`pip list --format=freeze` and installed at
+`share/OpenLIFU-<Slicer version>/BuildMetadata/python-environment.txt`. It is not
+an installable requirements lock or an SBOM. Packaging stops if the inventory
+cannot be generated.
+
+To generate and inspect the file without packaging, build the following target
+in the inner Slicer build:
+
+```sh
+cmake --build <custom-app-superbuild>/Slicer-build \
+  --target OpenLIFUPythonEnvironmentArtifacts
+```
+
+Add `--config Release` for a multi-configuration Windows build. The loose file
+is written to `<custom-app-superbuild>/Slicer-build/BuildMetadata`.
+
 ### Relation to other repositories
 
 * [SlicerOpenLIFU](https://github.com/OpenwaterHealth/SlicerOpenLIFU) is the Slicer extension that drives this Slicer custom application. It can be used as an extension in 3D Slicer.
