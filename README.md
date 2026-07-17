@@ -34,6 +34,40 @@ Follow [these instructions](https://github.com/OpenwaterHealth/OpenLIFU-python/t
 * [Building on Windows](BUILD_WINDOWS.md)
 * [Building on Linux](BUILD_LINUX.md)
 
+### Packaged Python environment metadata
+
+Every packaging run records the Python packages resolved in Slicer's build-tree
+Python environment. Packages contain the following files under
+`share/OpenLIFU-<Slicer version>/BuildMetadata`:
+
+* `python-environment.txt` is a sorted, sanitized `Name==Version` inventory
+  generated with `pip list --format=freeze`. This records names and versions
+  without the local source paths that `pip freeze` may emit. The artifact is
+  required; a pip consistency or inventory failure stops packaging.
+* `python-environment.cdx.json` is the same Python environment represented as a
+  reproducible CycloneDX 1.6 JSON document. CycloneDX is installed into a
+  separate build-only directory so its packages do not contaminate the
+  application environment. A CycloneDX failure produces a warning and omits
+  this optional file without suppressing the pip inventory.
+
+To generate and inspect the files without packaging, build the following target
+in the inner Slicer build:
+
+```sh
+cmake --build <custom-app-superbuild>/Slicer-build \
+  --target OpenLIFUPythonEnvironmentArtifacts
+```
+
+Add `--config Release` for a multi-configuration Windows build. The loose files
+are written to `<custom-app-superbuild>/Slicer-build/BuildMetadata`. If the
+build previously warned that the optional CycloneDX tools could not be
+downloaded, retry their isolated provisioning before rerunning the inner target:
+
+```sh
+cmake --build <custom-app-superbuild> \
+  --target OpenLIFUProvisionPythonEnvironmentTools
+```
+
 ### Relation to other repositories
 
 * [SlicerOpenLIFU](https://github.com/OpenwaterHealth/SlicerOpenLIFU) is the Slicer extension that drives this Slicer custom application. It can be used as an extension in 3D Slicer.
@@ -49,4 +83,3 @@ So, in order to update the `openlifu` that is used:
 
 
 ![OpenLIFU by Openwater](Applications/OpenLIFUApp/Resources/Images/LogoFull.png?raw=true)
-

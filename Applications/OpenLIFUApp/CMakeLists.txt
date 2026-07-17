@@ -98,6 +98,54 @@ slicerMacroBuildApplication(
   ${extra_args}
   )
 
+# --------------------------------------------------------------------------
+# Packaged Python environment metadata
+# --------------------------------------------------------------------------
+
+set(OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR "${CMAKE_BINARY_DIR}/BuildMetadata")
+set(OPENLIFU_PYTHON_ENVIRONMENT_GENERATOR
+  "${CMAKE_CURRENT_BINARY_DIR}/GeneratePythonEnvironmentArtifacts.py"
+  )
+set(OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT
+  "${CMAKE_CURRENT_BINARY_DIR}/GeneratePythonEnvironmentArtifacts.cmake"
+  )
+
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/GeneratePythonEnvironmentArtifacts.py"
+  "${OPENLIFU_PYTHON_ENVIRONMENT_GENERATOR}"
+  COPYONLY
+  )
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/GeneratePythonEnvironmentArtifacts.cmake.in"
+  "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
+  @ONLY
+  )
+
+add_custom_target(OpenLIFUPythonEnvironmentArtifacts
+  COMMAND "${CMAKE_COMMAND}" -P "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
+  BYPRODUCTS
+    "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.txt"
+    "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.cdx.json"
+  COMMENT "Generating Python environment artifacts"
+  VERBATIM
+  )
+
+install(
+  SCRIPT "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
+  COMPONENT Runtime
+  )
+install(
+  FILES "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.txt"
+  DESTINATION "${Slicer_INSTALL_SHARE_DIR}/BuildMetadata"
+  COMPONENT Runtime
+  )
+install(
+  FILES "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.cdx.json"
+  DESTINATION "${Slicer_INSTALL_SHARE_DIR}/BuildMetadata"
+  COMPONENT Runtime
+  OPTIONAL
+  )
+
 # On Windows, embed the application icon into OpenLIFUApp-real.exe using
 # CTKResEdit as a post-build step, mirroring how the launcher (OpenLIFU.exe)
 # already gets its icon. Without this, Windows populates its icon cache with

@@ -76,3 +76,19 @@ cd C:\W\OR\Slicer-build
 cmake --build . --config Release --target PACKAGE
 ```
 
+The installer contains `python-environment.txt` and, when CycloneDX generation
+succeeds, `python-environment.cdx.json` under
+`share\OpenLIFU-<Slicer version>\BuildMetadata`.
+
+Inspect the Python environment metadata
+---------------------------------------
+
+Generate the same files without creating an installer by running this from the
+inner build folder:
+
+```bat
+cd C:\W\OR\Slicer-build
+cmake --build . --config Release --target OpenLIFUPythonEnvironmentArtifacts
+```
+
+The files are written to `C:\W\OR\Slicer-build\BuildMetadata`.

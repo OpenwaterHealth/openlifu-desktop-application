@@ -39,3 +39,17 @@ From the inner build folder:
 make package
 ```
 
+The package contains `python-environment.txt` and, when CycloneDX generation
+succeeds, `python-environment.cdx.json` under
+`share/OpenLIFU-<Slicer version>/BuildMetadata`.
+
+## Inspect the Python environment metadata
+
+Generate the same files without creating a package by running this from the
+inner build folder:
+
+```sh
+cmake --build . --target OpenLIFUPythonEnvironmentArtifacts
+```
+
+The files are written to `OpenLIFU-superbuild/Slicer-build/BuildMetadata`.

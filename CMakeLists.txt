@@ -184,8 +184,11 @@ FetchContent_Populate(${extension_name}
 message(STATUS "Remote - ${extension_name} [OK]")
 list(APPEND Slicer_EXTENSION_SOURCE_DIRS ${${extension_name}_SOURCE_DIR})
 
-# Add python requirements for SlicerOpenLIFU
-list(APPEND Slicer_ADDITIONAL_DEPENDENCIES python-sliceropenlifu-requirements)
+# Add Python requirements for SlicerOpenLIFU and isolated SBOM build tools.
+list(APPEND Slicer_ADDITIONAL_DEPENDENCIES
+  python-sliceropenlifu-requirements
+  python-openlifu-environment-tools
+  )
 
 # When testing is enabled, SlicerOpenLIFU requires a Google Drive Service Account JSON key for DVC.
 # Validate the path here and forward it to the inner Slicer build so SlicerOpenLIFU can consume it.
