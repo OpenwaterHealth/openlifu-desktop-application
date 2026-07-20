@@ -29,7 +29,7 @@ slicerMacroBuildScriptedModule(
 set(_download_assets_script "${CMAKE_CURRENT_BINARY_DIR}/openlifu_download_assets.py")
 
 file(WRITE ${_download_assets_script} [==[
-import openlifu
+import openlifu.util.assets
 openlifu.util.assets.download_and_install_modnet()
 openlifu.util.assets.download_and_install_kwave_assets()
 ]==])
