@@ -34,7 +34,7 @@ ctest --test-dir OpenLIFU-superbuild/Slicer-build --output-on-failure
 
 ## Commit & Pull Request Guidelines
 
-Each commit should be granular and reference a GitHub issue, for example `Fix login startup race (#123)`. CI allows issue refs, full issue URLs, and prefixes such as `Bump`, `Merge`, `Revert`, `fixup!`, `squash!`, and `amend!`. Do not squash PRs on merge. PRs should describe behavior changes, link issues, include screenshots for UI changes, and note build/test results.
+Each commit should be granular and reference a GitHub issue, for example `Fix login startup race (#123)`. CI allows issue refs, full issue URLs, and prefixes such as `Bump`, `Merge`, `Release`, `Revert`, `fixup!`, `squash!`, and `amend!`. Do not squash PRs on merge. PRs should describe behavior changes, link issues, include screenshots for UI changes, and note build/test results.
 
 ## Security & Configuration Tips
 
