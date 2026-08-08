@@ -98,6 +98,64 @@ slicerMacroBuildApplication(
   ${extra_args}
   )
 
+# --------------------------------------------------------------------------
+# Packaged Python environment inventory
+# --------------------------------------------------------------------------
+
+set(OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR "${CMAKE_BINARY_DIR}/BuildMetadata")
+set(OPENLIFU_PYTHON_ENVIRONMENT_FILE
+  "${OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR}/python-environment.txt"
+  )
+set(OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT
+  "${CMAKE_CURRENT_BINARY_DIR}/GeneratePythonEnvironmentArtifacts.cmake"
+  )
+
+file(CONFIGURE
+  OUTPUT "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
+  CONTENT [=[
+set(_output_file "@OPENLIFU_PYTHON_ENVIRONMENT_FILE@")
+file(MAKE_DIRECTORY "@OPENLIFU_PYTHON_ENVIRONMENT_OUTPUT_DIR@")
+file(REMOVE "${_output_file}")
+
+execute_process(
+  COMMAND
+    "@PYTHON_EXECUTABLE@" -m pip --disable-pip-version-check
+      list --format=freeze
+  RESULT_VARIABLE _generation_result
+  OUTPUT_FILE "${_output_file}"
+  )
+
+if(NOT _generation_result EQUAL 0)
+  file(REMOVE "${_output_file}")
+  message(FATAL_ERROR
+    "Failed to generate the Python environment inventory "
+    "(result: ${_generation_result})."
+    )
+endif()
+
+message(STATUS "Generated Python environment inventory at ${_output_file}")
+]=]
+  @ONLY
+  NEWLINE_STYLE LF
+  )
+
+add_custom_target(OpenLIFUPythonEnvironmentArtifacts
+  COMMAND "${CMAKE_COMMAND}" -P "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
+  BYPRODUCTS "${OPENLIFU_PYTHON_ENVIRONMENT_FILE}"
+  COMMENT "Generating Python environment inventory"
+  VERBATIM
+  )
+
+install(
+  SCRIPT "${OPENLIFU_PYTHON_ENVIRONMENT_CMAKE_SCRIPT}"
+  COMPONENT Runtime
+  )
+install(
+  FILES "${OPENLIFU_PYTHON_ENVIRONMENT_FILE}"
+  DESTINATION "${Slicer_INSTALL_SHARE_DIR}/BuildMetadata"
+  COMPONENT Runtime
+  )
+
 # On Windows, embed the application icon into OpenLIFUApp-real.exe using
 # CTKResEdit as a post-build step, mirroring how the launcher (OpenLIFU.exe)
 # already gets its icon. Without this, Windows populates its icon cache with
