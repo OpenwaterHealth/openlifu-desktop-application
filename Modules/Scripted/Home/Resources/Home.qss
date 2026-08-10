@@ -17,3 +17,32 @@ QLineEdit { selection-background-color: #269cf6; selection-color: #FFFFFF; }
 QComboBox QLineEdit { selection-background-color: #3A3A3E; selection-color: #FFFFFF; }
 
 QComboBox::drop-down { border: none; width: 20px; }
+
+/* QGroupBox — thinner, light gray outline */
+QGroupBox {
+  background-color: #1E1E20;
+  border: 1px solid #BDC3C7;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding-top: 8px;
+  font-weight: bold;
+}
+QGroupBox::title {
+  subcontrol-origin: margin;
+  left: 10px;
+  padding: 0 4px;
+  color: #BDC3C7;
+}
+
+/* Collapsible section header */
+ctkCollapsibleButton {
+  background-color: #222732;
+  border: 1px solid #3E4E6F;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 4px 8px;
+}
+ctkCollapsibleButton:hover {
+  background-color: #2A2F3A;
+}
