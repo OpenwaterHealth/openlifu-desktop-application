@@ -46,3 +46,34 @@ ctkCollapsibleButton {
 ctkCollapsibleButton:hover {
   background-color: #2A2F3A;
 }
+
+/* Buttons — neutral gray by default.
+    Color-coded success/danger variants are opt-in via the
+   cssClass dynamic property, for actions that want to stand out. */
+QPushButton {
+  background-color: #3A3F4B;
+  border: 1px solid #BDC3C7;
+  border-radius: 6px;
+  min-height: 22px;
+  padding: 0 8px;
+  color: #FFFFFF;
+}
+QPushButton:hover    { background-color: #454B59; }
+QPushButton:pressed  { background-color: #2F333D; }
+QPushButton:disabled { background-color: #2A2C31; color: #888888; border-color: #55606E; }
+
+QPushButton[cssClass~="button--success"] {
+  background-color: #1f963d;
+  border-color: #0E5A23;
+}
+QPushButton[cssClass~="button--success"]:hover    { background-color: #26b048; }
+QPushButton[cssClass~="button--success"]:pressed  { background-color: #157031; }
+QPushButton[cssClass~="button--success"]:disabled { background-color: #2A4030; color: #9CB8A4; border-color: #0E5A23; }
+
+QPushButton[cssClass~="button--danger"] {
+  background-color: #C0392B;
+  border-color: #7A1F1F;
+}
+QPushButton[cssClass~="button--danger"]:hover    { background-color: #D0453A; }
+QPushButton[cssClass~="button--danger"]:pressed  { background-color: #8E1F1F; }
+QPushButton[cssClass~="button--danger"]:disabled { background-color: #3A2424; color: #B89A9A; border-color: #7A1F1F; }
