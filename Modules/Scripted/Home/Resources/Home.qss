@@ -77,3 +77,25 @@ QPushButton[cssClass~="button--danger"] {
 QPushButton[cssClass~="button--danger"]:hover    { background-color: #D0453A; }
 QPushButton[cssClass~="button--danger"]:pressed  { background-color: #8E1F1F; }
 QPushButton[cssClass~="button--danger"]:disabled { background-color: #3A2424; color: #B89A9A; border-color: #7A1F1F; }
+
+/* Slice + 3D view controller bars — neutral gray-blue instead of
+   Slicer's default per-view colors, with the same rounded
+   frame-outline treatment as the rest of the panels in this theme. */
+qMRMLSliceControllerWidget QWidget#BarWidget,
+qMRMLThreeDViewControllerWidget QWidget#BarWidget {
+  background-color: #3E4E6F;
+  border: 1px solid #BDC3C7;
+  border-radius: 6px;
+  margin: 2px;
+}
+
+/* The slice-position spinbox ("S:"/"A:"/"L:" + offset value) picked up
+   the general QDoubleSpinBox rounded-frame styling from the Inputs
+   section above since it's rendered by a real QAbstractSpinBox nested
+   inside qMRMLSliderWidget#SliceOffsetSlider — reset it to a plain,
+   frameless label-like look instead. */
+qMRMLSliderWidget#SliceOffsetSlider QAbstractSpinBox {
+  border: none;
+  background: transparent;
+  border-radius: 0;
+}

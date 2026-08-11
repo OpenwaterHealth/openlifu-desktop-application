@@ -219,6 +219,11 @@ class HomeLogic(ScriptedLoadableModuleLogic):
 
     def setup3DView(self):
         layoutManager = slicer.app.layoutManager()
+        threeDWidget = layoutManager.threeDWidget(0)
+        # Same ViewLabel legibility fix as setupSliceViewer() below — see
+        # comment there for why this can't just be done via Home.qss.
+        viewLabel = slicer.util.findChild(threeDWidget, "ViewLabel")
+        viewLabel.setStyleSheet("color: white; background-color: transparent;")
         # layoutManager.setLayout(slicer.vtkMRMLLayoutNode.SlicerLayoutOneUp3DView)
         # controller = slicer.app.layoutManager().threeDWidget(0).threeDController()
         # controller.setBlackBackground()
@@ -234,6 +239,12 @@ class HomeLogic(ScriptedLoadableModuleLogic):
 
     def setupSliceViewer(self, sliceWidget):
         controller = sliceWidget.sliceController()
+        # ViewLabel ("R"/"Y"/"G") has its own instance-level setStyleSheet
+        # (black-on-transparent) set once by qMRMLViewControllerBar, which
+        # takes precedence over our app-level Home.qss and would otherwise
+        # stay illegible now that the bar behind it is dark gray-blue.
+        viewLabel = slicer.util.findChild(sliceWidget, "ViewLabel")
+        viewLabel.setStyleSheet("color: white; background-color: transparent;")
         # controller.setStyleSheet("background-color: #000000")
         # controller.sliceViewLabel = ""
         # slicer.util.findChild(sliceWidget, "PinButton").visible = False
