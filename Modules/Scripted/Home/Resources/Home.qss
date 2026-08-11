@@ -1,22 +1,41 @@
 /* Inputs */
-QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox {
+QLineEdit, QSpinBox, QDoubleSpinBox {
   background-color: #222222;
   border: 1px solid #999999;
   border-radius: 4px;
   padding: 3px 6px;
   color: #FFFFFF;
 }
-QLineEdit:focus, QComboBox:focus { border: 1px solid #BDC3C7; }
+QLineEdit:focus { border: 1px solid #BDC3C7; }
 
-/* Text-selection color only makes sense for the editable QLineEdit —
-   applying it to QComboBox/QSpinBox too was bleeding blue into their
-   (non-text-selection) highlight rendering. Also re-pin it to gray for
-   a QComboBox's own internal line edit (when editable), so typing in
-   an editable combo box doesn't show the standalone-field blue either. */
 QLineEdit { selection-background-color: #269cf6; selection-color: #FFFFFF; }
 QComboBox QLineEdit { selection-background-color: #3A3A3E; selection-color: #FFFFFF; }
 
+QComboBox {
+  background-color: #424242;
+  border: 1px solid #999999;
+  border-radius: 4px;
+  padding: 3px 6px;
+  color: #FFFFFF;
+}
+QComboBox:focus { border: 1px solid #BDC3C7; }
+
 QComboBox::drop-down { border: none; width: 20px; }
+
+QComboBox QAbstractItemView {
+  background-color: #424242;
+  border: 1px solid #3E4E6F;
+  outline: none;
+  selection-background-color: rgba(255, 255, 255, 30);
+  selection-color: #FFFFFF;
+}
+QComboBox QAbstractItemView::item {
+  padding: 4px 8px;
+  color: #FFFFFF;
+}
+QComboBox QAbstractItemView::item:hover {
+  background-color: rgba(255, 255, 255, 30);
+}
 
 /* QGroupBox — thinner, light gray outline */
 QGroupBox {
