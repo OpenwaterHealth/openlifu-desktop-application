@@ -17,7 +17,7 @@ import SlicerCustomAppUtilities
 from Resources import HomeResources
 
 def print_message():
-    print("This special version of OpenLIFU is patched to work with the SlicerOpenLIFU v1.19.0+legacy.io which is patched to work with the openlifu-python tag v0.20.0+legacy.io.0.9.0 which is essentially just openlifu v0.20.0 with the io module reverted to the v0.9.0 state.")
+    print("This special version of OpenLIFU is patched to work with the SlicerOpenLIFU v1.19.1+legacy.io which is patched to work with the openlifu-python tag v0.20.1+legacy.io.0.9.0.")
 class Home(ScriptedLoadableModule):
     """The home module allows to orchestrate and style the overall application workflow.
 
