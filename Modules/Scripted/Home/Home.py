@@ -11,6 +11,7 @@ from slicer.ScriptedLoadableModule import (
 )
 from slicer.util import VTKObservationMixin
 
+import HomeLib.update_check
 import SlicerCustomAppUtilities
 
 # Import to ensure the files are available through the Qt resource system
@@ -96,6 +97,9 @@ class Home(ScriptedLoadableModule):
         slicer.app.connect("startupCompleted()", configure_views)
 
         slicer.app.connect("startupCompleted()", lambda : slicer.util.getModuleLogic("OpenLIFUHome").workflow_jump_ahead())
+
+        if not slicer.app.commandOptions().noMainWindow:
+            slicer.app.connect("startupCompleted()", HomeLib.update_check.inject_update_widget)
 
 class HomeWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     """Uses ScriptedLoadableModuleWidget base class, available at:
