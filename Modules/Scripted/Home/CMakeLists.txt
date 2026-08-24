@@ -4,6 +4,8 @@ set(MODULE_NAME Home)
 #-----------------------------------------------------------------------------
 set(MODULE_PYTHON_SCRIPTS
   ${MODULE_NAME}.py
+  HomeLib/__init__.py
+  HomeLib/update_check.py
   )
 
 set(MODULE_PYTHON_RESOURCES
@@ -24,6 +26,15 @@ slicerMacroBuildScriptedModule(
   SCRIPTS ${MODULE_PYTHON_SCRIPTS} ${MODULE_PYTHON_QRC_RESOURCES}
   RESOURCES ${MODULE_PYTHON_RESOURCES}
   )
+
+#-----------------------------------------------------------------------------
+if(BUILD_TESTING)
+  slicer_add_python_unittest(
+    SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Python/test_update_check.py
+    SLICER_ARGS --no-main-window --disable-modules
+    TESTNAME_PREFIX nomainwindow_
+    )
+endif()
 
 #-----------------------------------------------------------------------------
 set(_download_assets_script "${CMAKE_CURRENT_BINARY_DIR}/openlifu_download_assets.py")
