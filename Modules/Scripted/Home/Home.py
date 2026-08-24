@@ -163,7 +163,6 @@ class HomeWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         slicer.util.setPythonConsoleVisible(visible)
         slicer.util.setApplicationLogoVisible(visible)
         keepToolbars = [
-            slicer.util.findChild(slicer.util.mainWindow(), "MainToolBar"),
             slicer.util.findChild(slicer.util.mainWindow(), "ViewToolBar"),
             slicer.util.findChild(slicer.util.mainWindow(), "CustomToolBar"),
         ]
