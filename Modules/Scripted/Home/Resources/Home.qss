@@ -2,16 +2,16 @@
 * { font-family: "Segoe UI", sans-serif; }
 
 /* Inputs */
-QLineEdit, QSpinBox, QDoubleSpinBox {
+QLineEdit, QSpinBox, QDoubleSpinBox, QPlainTextEdit {
   background-color: #222222;
   border: 1px solid #999999;
   border-radius: 4px;
   padding: 3px 6px;
   color: #FFFFFF;
 }
-QLineEdit:focus { border: 1px solid #BDC3C7; }
+QLineEdit:focus, QPlainTextEdit:focus { border: 1px solid #BDC3C7; }
 
-QLineEdit { selection-background-color: #269cf6; selection-color: #FFFFFF; }
+QLineEdit, QPlainTextEdit { selection-background-color: #269cf6; selection-color: #FFFFFF; }
 QComboBox QLineEdit { selection-background-color: #3A3A3E; selection-color: #FFFFFF; }
 
 QComboBox {
