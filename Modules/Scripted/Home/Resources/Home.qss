@@ -1,3 +1,6 @@
+/* Application-wide font */
+* { font-family: "Segoe UI", sans-serif; }
+
 /* Inputs */
 QLineEdit, QSpinBox, QDoubleSpinBox {
   background-color: #222222;
