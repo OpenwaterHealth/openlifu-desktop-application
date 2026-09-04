@@ -13,6 +13,7 @@ set(MODULE_PYTHON_RESOURCES
   Resources/Icons/Gears.png
   Resources/Icons/ArrowDown.png
   Resources/Icons/ArrowUp.png
+  Resources/Icons/CheckMark.png
   Resources/UI/${MODULE_NAME}.ui
   Resources/UI/Settings.ui
   Resources/Home.qss

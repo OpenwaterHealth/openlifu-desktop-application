@@ -110,6 +110,36 @@ QTableCornerButton::section {
   border: none;
 }
 
+/* Checkboxes / radio buttons */
+QCheckBox::indicator, QRadioButton::indicator {
+  width: 10px;
+  height: 10px;
+}
+QCheckBox::indicator {
+  border: 2px solid rgba(255, 255, 255, 0.70);
+  border-radius: 2px;
+  background-color: transparent;
+}
+QCheckBox::indicator:hover { border-color: #FFFFFF; }
+QCheckBox::indicator:checked {
+  border: 2px solid #F48FB1;
+  background-color: #F48FB1;
+  image: url(%ICONS_DIR%/CheckMark.png);
+}
+QCheckBox::indicator:disabled { border-color: rgba(255, 255, 255, 0.30); }
+
+QRadioButton::indicator {
+  border: 2px solid rgba(255, 255, 255, 0.70);
+  border-radius: 7px;
+  background-color: transparent;
+}
+QRadioButton::indicator:hover { border-color: #FFFFFF; }
+QRadioButton::indicator:checked {
+  border: 2px solid #F48FB1;
+  background-color: #F48FB1;
+}
+QRadioButton::indicator:disabled { border-color: rgba(255, 255, 255, 0.30); }
+
 /* QGroupBox — thinner, light gray outline */
 QGroupBox {
   background-color: #1E1E20;
