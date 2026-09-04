@@ -73,6 +73,43 @@ QComboBox QAbstractItemView::item:hover {
   background-color: rgba(255, 255, 255, 30);
 }
 
+/* Tables/trees/lists 
+  Styling based on openlifu-test-app's Support Diagnostics table.
+
+  Note:  alternate-background-color only takes effect on widgets 
+  that have setAlternatingRowColors(True) set in
+  UI file — this rule doesn't turn that behavior on by itself.
+  The alternate color is very subtle */
+QTableWidget, QTableView, QTreeView, QListWidget {
+  background-color: #1E1E20;
+  alternate-background-color: #232325;
+  border: 1px solid #3E4E6F;
+  border-radius: 6px;
+  gridline-color: transparent;
+  color: #ECEFF1;
+  outline: none;
+}
+QTableWidget::item, QTreeView::item, QListWidget::item {
+  padding: 4px 8px;
+  border: none;
+}
+QTableWidget::item:selected, QTreeView::item:selected, QListWidget::item:selected {
+  background-color: #269cf6;
+  color: #FFFFFF;
+}
+QHeaderView::section {
+  background-color: #2C3E50;
+  color: #BDC3C7;
+  font-weight: bold;
+  padding: 3px 6px;
+  border: none;
+  border-bottom: 1px solid #3E4E6F;
+}
+QTableCornerButton::section {
+  background-color: #2C3E50;
+  border: none;
+}
+
 /* QGroupBox — thinner, light gray outline */
 QGroupBox {
   background-color: #1E1E20;
