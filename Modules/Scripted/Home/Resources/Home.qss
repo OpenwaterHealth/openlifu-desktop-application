@@ -200,6 +200,16 @@ QPushButton[cssClass~="button--danger"]:hover    { background-color: #D0453A; }
 QPushButton[cssClass~="button--danger"]:pressed  { background-color: #8E1F1F; }
 QPushButton[cssClass~="button--danger"]:disabled { background-color: #3A2424; color: #B89A9A; border-color: #7A1F1F; }
 
+/* QLabel cssClass variants
+  The base QLabel type selector is left unstyled
+   label--secondary: blue-gray "value"/readout text — 
+   used for data readouts.
+   label--status-*: PASS/FAIL/SKIP colors */
+QLabel[cssClass~="label--secondary"] { color: #9FB3C8; }
+QLabel[cssClass~="label--status-success"] { color: #2ECC71; font-weight: bold; }
+QLabel[cssClass~="label--status-danger"]  { color: #E74C3C; font-weight: bold; }
+QLabel[cssClass~="label--status-warning"] { color: #F39C12; font-weight: bold; }
+
 /* Slice + 3D view controller bars — neutral gray-blue instead of
    Slicer's default per-view colors, with the same rounded
    frame-outline treatment as the rest of the panels in this theme. */
