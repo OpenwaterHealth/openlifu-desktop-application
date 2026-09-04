@@ -22,6 +22,39 @@ QComboBox:focus { border: 1px solid #BDC3C7; }
 
 QComboBox::drop-down { border: none; width: 20px; }
 
+/* Qt stops drawing the native arrow as soon as ::drop-down is styled above.
+   %ICONS_DIR% is substituted with an absolute, on-disk path in
+   HomeWidget.applyApplicationStyle() before this stylesheet is applied. */
+QComboBox::down-arrow {
+  image: url(%ICONS_DIR%/ArrowDown.png);
+  width: 10px;
+  height: 6px;
+  margin-right: 6px;
+}
+
+QSpinBox::up-button, QDoubleSpinBox::up-button {
+  subcontrol-origin: border;
+  subcontrol-position: top right;
+  width: 16px;
+  border: none;
+}
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+  subcontrol-origin: border;
+  subcontrol-position: bottom right;
+  width: 16px;
+  border: none;
+}
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {
+  image: url(%ICONS_DIR%/ArrowUp.png);
+  width: 8px;
+  height: 5px;
+}
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
+  image: url(%ICONS_DIR%/ArrowDown.png);
+  width: 8px;
+  height: 5px;
+}
+
 QComboBox QAbstractItemView {
   background-color: #424242;
   border: 1px solid #3E4E6F;
