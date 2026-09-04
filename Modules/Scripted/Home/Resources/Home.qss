@@ -221,3 +221,33 @@ qMRMLSliderWidget#SliceOffsetSlider QAbstractSpinBox {
   background: transparent;
   border-radius: 0;
 }
+
+/* Scrollbars — flat, minimal handle-only style (no arrow buttons) using
+   the app's existing #3E4E6F accent */
+QScrollBar:vertical {
+  background: transparent;
+  width: 10px;
+  margin: 0;
+}
+QScrollBar::handle:vertical {
+  background: #3E4E6F;
+  border-radius: 5px;
+  min-height: 24px;
+}
+QScrollBar::handle:vertical:hover { background: #4A5D85; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; border: none; background: none; }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }
+
+QScrollBar:horizontal {
+  background: transparent;
+  height: 12px;
+  margin: 0;
+}
+QScrollBar::handle:horizontal {
+  background: #3E4E6F;
+  border-radius: 5px;
+  min-width: 24px;
+}
+QScrollBar::handle:horizontal:hover { background: #4A5D85; }
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; border: none; background: none; }
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; }
