@@ -12,7 +12,6 @@ from slicer.ScriptedLoadableModule import (
 from slicer.util import VTKObservationMixin
 
 import HomeLib.update_check
-import SlicerCustomAppUtilities
 
 # Import to ensure the files are available through the Qt resource system
 from Resources import HomeResources
@@ -198,7 +197,11 @@ class HomeWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.setSlicerUIVisible(not visible)
 
     def applyApplicationStyle(self):
-        SlicerCustomAppUtilities.applyStyle([slicer.app], self.resourcePath("Home.qss"))
+        with open(self.resourcePath("Home.qss"), "r") as fh:
+            styleSheet = fh.read()
+        iconsDir = self.resourcePath("Icons").replace("\\", "/")
+        styleSheet = styleSheet.replace("%ICONS_DIR%", iconsDir)
+        slicer.app.styleSheet = styleSheet
 
 
 class HomeLogic(ScriptedLoadableModuleLogic):
