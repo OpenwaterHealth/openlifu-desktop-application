@@ -41,6 +41,8 @@ int SlicerAppMain(int argc, char* argv[])
     return app.returnCode();
     }
 
+  qAppStyle::configureApplication(app);
+
   QScopedPointer<SlicerMainWindowType> window;
   QScopedPointer<QSplashScreen> splashScreen;
 

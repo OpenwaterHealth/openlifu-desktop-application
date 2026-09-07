@@ -24,6 +24,8 @@
 // Slicer includes
 #include "qSlicerStyle.h"
 
+class qSlicerApplication;
+
 class Q_OPENLIFU_APP_EXPORT qAppStyle
   : public qSlicerStyle
 {
@@ -35,6 +37,10 @@ public:
   /// Constructors
   qAppStyle();
   virtual ~qAppStyle();
+
+  /// Install and enforce the custom style after application settings have loaded.
+  /// Call once before creating the main window.
+  static void configureApplication(qSlicerApplication& app);
 
   /// Reimplemented to customize colors.
   /// \sa QStyle::standardPalette()
