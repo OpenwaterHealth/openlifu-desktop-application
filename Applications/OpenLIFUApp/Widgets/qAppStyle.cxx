@@ -28,6 +28,11 @@
 
 // CTK includes
 #include <ctkCollapsibleButton.h>
+#include <ctkSettingsDialog.h>
+
+// Slicer includes
+#include "qSlicerApplication.h"
+#include "qSlicerSettingsStylesPanel.h"
 
 // OpenLIFU includes
 #include "qAppStyle.h"
@@ -48,9 +53,39 @@ qAppStyle::~qAppStyle()
 }
 
 //------------------------------------------------------------------------------
+void qAppStyle::configureApplication(qSlicerApplication& app)
+{
+  auto* stylesPanel = app.settingsDialog()->findChild<qSlicerSettingsStylesPanel*>();
+  auto applyAppStyle = [&app, stylesPanel]()
+    {
+    if (stylesPanel && stylesPanel->currentStyle() != "Dark Slicer")
+      {
+      stylesPanel->setCurrentStyle("Dark Slicer");
+      return;
+      }
+    app.removeEventFilter(app.style());
+    app.setStyle(new qAppStyle);
+    app.setPalette(app.style()->standardPalette());
+    app.installEventFilter(app.style());
+    };
+
+  // Keep the custom style when appearance settings are loaded or reset.
+  if (stylesPanel)
+    {
+    QObject::connect(stylesPanel, &qSlicerSettingsStylesPanel::currentStyleChanged,
+                     &app, applyAppStyle);
+    }
+  applyAppStyle();
+  if (stylesPanel)
+    {
+    stylesPanel->applySettings();
+    }
+}
+
+//------------------------------------------------------------------------------
 QPalette qAppStyle::standardPalette()const
 {
-  QPalette palette = this->Superclass::standardPalette();
+  QPalette palette = this->Superclass::standardDarkPalette();
 
   palette.setColor(QPalette::Active, QPalette::Window, "#1E1E20");
   palette.setColor(QPalette::Inactive, QPalette::Window, "#1E1E20");
