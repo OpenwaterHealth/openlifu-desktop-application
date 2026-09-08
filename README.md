@@ -7,6 +7,13 @@ This desktop application provides a graphical user interface for planning and co
 
 _This project is in active development and may change from version to version without notice._
 
+## Support
+
+![Python library, Slicer extension, and desktop application maintenance by release line](docs/support-schedule.svg)
+
+The latest release line receives Full Maintenance and the immediately preceding line receives Critical Maintenance.
+See the [support schedule](SUPPORT.md) for details.
+
 ## Features
 
 * Manage users, subjects, and sessions in an [OpenLIFU database](https://openlifu.readthedocs.io/en/latest/_autosummary/openlifu.db.database.html#module-openlifu.db.database).
