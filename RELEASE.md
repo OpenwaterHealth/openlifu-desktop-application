@@ -168,11 +168,19 @@ SlicerOpenLIFU pin for unrelated fixes.
    uv run tools/release_component_version_row.py --app-version vX.Y.Z
    ```
 
-4. Commit and push the final release updates.
-5. Ensure tests pass.
-6. Build the final packages. They should end up with correct names if the desktop application version is just `vX.Y.Z`.
-7. Sign the macOS and Windows packages.
-8. Tag the final release from the release branch:
+4. Update support documentation for the final release according to
+   [SUPPORT.md](SUPPORT.md). In `openlifu-desktop-application`, `SlicerOpenLIFU`,
+   and `openlifu-python`, update `docs/support-schedule.svg` (shared by the
+   README and `SUPPORT.md`) and the accompanying support ranges and snapshot
+   dates. Update the status emojis and snapshot date in
+   [the release component version table](docs/release-component-version-table.md),
+   including existing rows affected by the new support boundaries or superseded
+   patches. The row-generation script supplies versions; add the emojis manually.
+5. Commit and push the final release updates.
+6. Ensure tests pass.
+7. Build the final packages. They should end up with correct names if the desktop application version is just `vX.Y.Z`.
+8. Sign the macOS and Windows packages.
+9. Tag the final release from the release branch:
 
    ```bash
    git checkout release/X.Y
@@ -181,7 +189,7 @@ SlicerOpenLIFU pin for unrelated fixes.
    git push origin vX.Y.Z
    ```
 
-9. Create the GitHub release from `vX.Y.Z` and upload the packages.
+10. Create the GitHub release from `vX.Y.Z` and upload the packages.
 
 ## Patch Releases
 
@@ -206,17 +214,22 @@ fixes, or dependency patch updates needed for the released line.
    uv run tools/release_component_version_row.py --app-version vX.Y.1
    ```
 
-5. Commit and push the patch updates.
-6. Ensure tests pass.
-7. Build the packages. They should end up with correct names if the desktop application version is just `vX.Y.Z`.
-8. Sign the macOS and Windows packages.
-9. Tag the patch release from the release branch:
+5. Review the support visuals and text in all three repositories as described
+   in [the final-release checklist](#t-final-release). Update the status emojis
+   and snapshot date in the release component version table, including marking
+   superseded patches unsupported. A patch release does not advance the
+   release-line support windows.
+6. Commit and push the patch updates.
+7. Ensure tests pass.
+8. Build the packages. They should end up with correct names if the desktop application version is just `vX.Y.Z`.
+9. Sign the macOS and Windows packages.
+10. Tag the patch release from the release branch:
 
-   ```bash
-   git checkout release/X.Y
-   git pull
-   git tag vX.Y.1
-   git push origin vX.Y.1
-   ```
+    ```bash
+    git checkout release/X.Y
+    git pull
+    git tag vX.Y.1
+    git push origin vX.Y.1
+    ```
 
-10. Create the GitHub release from `vX.Y.1` and upload the renamed packages.
+11. Create the GitHub release from `vX.Y.1` and upload the renamed packages.
