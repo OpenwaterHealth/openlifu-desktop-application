@@ -5,8 +5,6 @@ An open-source software platform for Low Intensity Focused Ultrasound (LIFU).
 
 This desktop application provides a graphical user interface for planning and controlling OpenLIFU sonications.
 
-_This project is in active development and may change from version to version without notice._
-
 ## Support
 
 ![Python library, Slicer extension, and desktop application maintenance by release line](docs/support-schedule.svg)
