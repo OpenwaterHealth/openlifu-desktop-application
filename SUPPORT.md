@@ -57,5 +57,5 @@ The [release component version table](docs/release-component-version-table.md) s
 
 ## Temporary Exceptions
 
-- The lastest "legacy IO" release line is fully supported for now.
+- The latest "legacy IO" release line is fully supported for now.
 - v1.11 is Unsupported, rather than receiving Critical Support.

@@ -12,33 +12,36 @@
       <text x="24" y="91" font-size="16" font-weight="600" fill="#24292f">openlifu-python</text>
       <g text-anchor="middle" font-size="18" font-weight="600">
         <rect x="190" y="52" width="174" height="64" rx="8" fill="#eaeef2" stroke="#6e7781" stroke-dasharray="5 5"/>
-        <text x="277" y="91" fill="#424a53">v0.17 and older</text>
+        <text x="277" y="91" fill="#424a53">v0.19 and older</text>
         <rect x="380" y="52" width="174" height="64" rx="8" fill="#fff8c5" stroke="#9a6700"/>
-        <text x="467" y="91" fill="#633c01">v0.18 - v0.19</text>
+        <text x="467" y="91" fill="#633c01">(none)</text>
         <rect x="570" y="52" width="174" height="64" rx="8" fill="#dafbe1" stroke="#1a7f37"/>
-        <text x="657" y="91" fill="#116329">v0.20 - v0.21</text>
+        <text x="657" y="80" fill="#116329">v0.20 - v0.21</text>
+        <text x="657" y="102" font-size="13" font-weight="400" fill="#116329">+ v0.20 legacy IO</text>
       </g>
     </g>
     <g>
       <text x="24" y="167" font-size="16" font-weight="600" fill="#24292f">SlicerOpenLIFU</text>
       <g text-anchor="middle" font-size="18" font-weight="600">
         <rect x="190" y="128" width="174" height="64" rx="8" fill="#eaeef2" stroke="#6e7781" stroke-dasharray="5 5"/>
-        <text x="277" y="167" fill="#424a53">v1.17 and older</text>
+        <text x="277" y="167" fill="#424a53">v1.18 and older</text>
         <rect x="380" y="128" width="174" height="64" rx="8" fill="#fff8c5" stroke="#9a6700"/>
-        <text x="467" y="167" fill="#633c01">v1.18</text>
+        <text x="467" y="167" fill="#633c01">(none)</text>
         <rect x="570" y="128" width="174" height="64" rx="8" fill="#dafbe1" stroke="#1a7f37"/>
-        <text x="657" y="167" fill="#116329">v1.19 - v1.22</text>
+        <text x="657" y="156" fill="#116329">v1.19 - v1.22</text>
+        <text x="657" y="178" font-size="13" font-weight="400" fill="#116329">+ v1.19 legacy IO</text>
       </g>
     </g>
     <g>
       <text x="24" y="243" font-size="16" font-weight="600" fill="#24292f">Desktop app</text>
       <g text-anchor="middle" font-size="18" font-weight="600">
         <rect x="190" y="204" width="174" height="64" rx="8" fill="#eaeef2" stroke="#6e7781" stroke-dasharray="5 5"/>
-        <text x="277" y="243" fill="#424a53">v1.10 and older</text>
+        <text x="277" y="243" fill="#424a53">v1.11 and older</text>
         <rect x="380" y="204" width="174" height="64" rx="8" fill="#fff8c5" stroke="#9a6700"/>
-        <text x="467" y="243" fill="#633c01">v1.11</text>
+        <text x="467" y="243" fill="#633c01">(none)</text>
         <rect x="570" y="204" width="174" height="64" rx="8" fill="#dafbe1" stroke="#1a7f37"/>
-        <text x="657" y="243" fill="#116329">v1.12</text>
+        <text x="657" y="232" fill="#116329">v1.12</text>
+        <text x="657" y="254" font-size="13" font-weight="400" fill="#116329">+ v1.12 legacy IO</text>
       </g>
     </g>
   </g>
