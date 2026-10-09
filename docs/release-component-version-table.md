@@ -11,6 +11,7 @@ Support status is based on the [support policy](../SUPPORT.md):
 
 | OpenLIFU app | SlicerOpenLIFU | `openlifu` Python package | 3D Slicer source | Sample database |
 | --- | --- | --- | --- | --- |
+| ⚪`vX.Y.Z-rc.1` | 🟢`v1.23.0` | 🟢`v0.22.0` | `868bf4ac` | `openlifu-sample-database: openlifu-v0.22` |
 | 🟢 `v1.12.1+legacy.io` | 🟢 `v1.19.1+legacy.io` | 🟢 `v0.20.1+legacy.io.0.9.0` | `868bf4ac` | `openlifu-sample-database: openlifu-v0.20.0` |
 | 🟢 `v1.12.1` | 🟢 `v1.19.1` | 🟢 `v0.20.1` | `868bf4ac` | `openlifu-sample-database: openlifu-v0.20.0` |
 | ⚪ `v1.12.0+legacy.io` | ⚪ `v1.19.0+legacy.io` | ⚪ `v0.20.0+legacy.io.0.9.0` | `868bf4ac` | `openlifu-sample-database: openlifu-v0.20.0` |
