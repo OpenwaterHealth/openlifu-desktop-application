@@ -64,7 +64,7 @@ void qOpenLIFUAppMainWindowPrivate::setupUi(QMainWindow * mainWindow)
   //----------------------------------------------------------------------------
   QAction* helpAboutOpenLIFUAppAction = new QAction(mainWindow);
   helpAboutOpenLIFUAppAction->setObjectName("HelpAboutOpenLIFUAppAction");
-  helpAboutOpenLIFUAppAction->setText("About " + app->mainApplicationName());
+  helpAboutOpenLIFUAppAction->setText("About " + app->mainApplicationDisplayName());
 
   //----------------------------------------------------------------------------
   // Calling "setupUi()" after adding the actions above allows the call
@@ -122,7 +122,7 @@ qOpenLIFUAppMainWindow::~qOpenLIFUAppMainWindow()
 void qOpenLIFUAppMainWindow::on_HelpAboutOpenLIFUAppAction_triggered()
 {
   qSlicerApplication* app = qSlicerApplication::application();
-  const QString applicationName = app->mainApplicationName();
+  const QString applicationDisplayName = app->mainApplicationDisplayName();
   const QString text = QString(
     "<h3>%1</h3>"
     "<p>An open-source software platform for Low Intensity Focused Ultrasound (LIFU).</p>"
@@ -134,12 +134,12 @@ void qOpenLIFUAppMainWindow::on_HelpAboutOpenLIFUAppAction_triggered()
     "treatment or diagnosis of any disease. It is provided AS-IS, with no "
     "warranties. User assumes all liability and responsibility for identifying "
     "and mitigating risks associated with using this software.</p>")
-    .arg(applicationName.toHtmlEscaped())
+    .arg(applicationDisplayName.toHtmlEscaped())
     .arg(app->applicationVersion().toHtmlEscaped())
     .arg(app->mainApplicationRepositoryRevision().toHtmlEscaped())
     .arg(QString(Slicer_VERSION_FULL).toHtmlEscaped())
     .arg(app->revision().toHtmlEscaped())
     .arg(app->repositoryRevision().toHtmlEscaped());
 
-  QMessageBox::about(this, tr("About %1").arg(applicationName), text);
+  QMessageBox::about(this, tr("About %1").arg(applicationDisplayName), text);
 }
