@@ -22,19 +22,20 @@ vX.Y.Z-rc.N
 the Git tag, GitHub prerelease, release component version table row, and package
 filenames.
 
-To visibly distinguish release candidates inside the running application,
-temporarily add an
-`APPLICATION_DISPLAY_NAME` in
+To visibly distinguish release candidates in the window title and About dialog,
+temporarily set `APPLICATION_DISPLAY_NAME` in
 `Applications/OpenLIFUApp/slicer-application-properties.cmake`. For example,
-`v1.12.0-rc.2` could use:
+`v1.13.0-rc.1` could use:
 
 ```cmake
 set(APPLICATION_DISPLAY_NAME
-  "OpenLIFU (RC 2)"
+  "OpenLIFU (RC 1)"
   )
 ```
 
-Remove release-candidate display-name decorations before the final release.
+Keep `APPLICATION_NAME` as `OpenLIFU`. After changing the display name,
+reconfigure and build the existing outer superbuild. Remove the
+`APPLICATION_DISPLAY_NAME` setting and repeat those steps before the final release.
 
 Use a new minor version for a planned desktop application release and a patch
 version for fixes to an already released line.

@@ -22,7 +22,6 @@
 // Slicer includes
 #include "qSlicerApplication.h"
 #include "qSlicerApplicationHelper.h"
-#include "vtkSlicerConfigure.h" // For Slicer_MAIN_PROJECT_APPLICATION_NAME
 #include "vtkSlicerVersionConfigure.h" // For Slicer_MAIN_PROJECT_VERSION_FULL
 
 namespace
@@ -51,7 +50,9 @@ int SlicerAppMain(int argc, char* argv[])
 
   if (!window.isNull())
     {
-    QString windowTitle = QString("%1 %2").arg(Slicer_MAIN_PROJECT_APPLICATION_NAME).arg(Slicer_MAIN_PROJECT_VERSION_FULL);
+    QString windowTitle = QString("%1 %2")
+      .arg(app.mainApplicationDisplayName())
+      .arg(Slicer_MAIN_PROJECT_VERSION_FULL);
     window->setWindowTitle(windowTitle);
     }
 
