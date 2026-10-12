@@ -1,0 +1,62 @@
+name: Sync LIFU issues to project board
+
+# Adds every open issue from every non-archived *lifu* repo in the org to the
+# "OpenLIFU Feature/Bug Tracking" board (org project #16). The board's built-in
+# auto-add workflows are capped at 5 repos on our plan; this covers the rest.
+# See #105.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: sync-project-board
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # The token reads issues in private repos; the environment restricts it to main.
+    environment: project-board-sync
+    env:
+      GH_TOKEN: ${{ secrets.LIFU_PROJECT_TOKEN }}
+      OWNER: OpenwaterHealth
+      PROJECT: 16
+    steps:
+      - name: Add open LIFU issues missing from the board
+        run: |
+          set -euo pipefail
+
+          gh project item-list "$PROJECT" --owner "$OWNER" --format json --limit 10000 \
+            --jq '.items[].content.url // empty' | sort -u > on_board.txt
+
+          gh repo list "$OWNER" --limit 1000 --no-archived --json name,hasIssuesEnabled \
+            --jq '.[] | select(.hasIssuesEnabled and (.name | test("lifu"; "i"))) | .name' > repos.txt
+
+          while read -r repo; do
+            gh issue list -R "$OWNER/$repo" --state open --limit 10000 --json url --jq '.[].url' < /dev/null
+          done < repos.txt | sort -u > open_issues.txt
+
+          comm -23 open_issues.txt on_board.txt > to_add.txt
+
+          # This repo is public, so log counts only: issue URLs would expose private repo names.
+          added=0
+          failed=0
+          while read -r url; do
+            if gh project item-add "$PROJECT" --owner "$OWNER" --url "$url" < /dev/null > /dev/null 2>&1; then
+              added=$((added + 1))
+            else
+              failed=$((failed + 1))
+            fi
+            sleep 1
+          done < to_add.txt
+
+          echo "repos=$(wc -l < repos.txt) open_issues=$(wc -l < open_issues.txt) already_on_board=$(( $(wc -l < open_issues.txt) - $(wc -l < to_add.txt) )) added=$added failed=$failed"
+          if [ "$failed" -gt 0 ]; then
+            echo "::error::$failed issue(s) could not be added to project #$PROJECT"
+            exit 1
+          fi
