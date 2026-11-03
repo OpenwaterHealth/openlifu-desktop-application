@@ -20,10 +20,10 @@ See the [support schedule](SUPPORT.md) for details.
 
 * Manage users, subjects, and sessions in an [OpenLIFU database](https://openlifu.readthedocs.io/en/latest/_autosummary/openlifu.db.database.html#module-openlifu.db.database).
 * Create and configure [OpenLIFU sonication protocols](https://openlifu.readthedocs.io/en/latest/_autosummary/openlifu.plan.protocol.Protocol.html#openlifu.plan.protocol.Protocol).
-* Execute a clinical workflow with pre-planning and sonication stages.
+* Execute a guided research workflow with pre-planning and sonication stages.
 * Work with OpenLIFU transducers in the space of a subject MRI, specifying sonication targets and virtually fitting a transducer before a sonication session.
 * Track the spatial configuration of a transducer during a sonication session via photogrammetry.
-* Generate transducer-specific and patient-specific sonication solutions and send them to an Openwater device.
+* Generate transducer-specific and subject-specific sonication solutions and send them to an Openwater device.
 
 <img src="screenshot.png" width="50%"/>
 
